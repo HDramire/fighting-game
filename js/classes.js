@@ -4,7 +4,8 @@ class Sprite {
       imageSrc, 
       scale = 1, 
       frameMax = 1, 
-      offset = {x: 0, y: 0}
+      offset = {x: 0, y: 0},
+      frameHold = 5
     }) {
         this.position = position
         this.width = 50
@@ -15,7 +16,7 @@ class Sprite {
         this.frameMax = frameMax
         this.frameCurrent = 0
         this.frameElapsed = 0
-        this.frameHold = 5
+        this.frameHold = frameHold
         this.offset = offset
 
     }
@@ -60,6 +61,7 @@ class Fighter extends Sprite{
         scale = 1,
         frameMax = 1,
         offset = {x:0, y:0},
+        frameHold = 5,
         sprites,
         attackBox = { offset: {}, width: undefined, hegiht: undefined }
     }) {
@@ -68,7 +70,8 @@ class Fighter extends Sprite{
             imageSrc,
             scale,
             frameMax,
-            offset
+            offset,
+            frameHold
         })
         this.velocity = velocity
         this.width = 50
@@ -88,13 +91,19 @@ class Fighter extends Sprite{
         this.health = 100
         this.frameCurrent = 0
         this.frameElapsed = 0
-        this.frameHold = 5
+        this.frameHold = frameHold
+        this.defaultFrameHold = frameHold
+        this.defaultOffset = offset
         this.sprites = sprites
         this.dead = false
+        this.jumpCount = 0
+        this.maxJumps = 3
 
         for (const sprite in sprites) {
           sprites[sprite].image = new Image()
           sprites[sprite].image.src = sprites[sprite].imageSrc
+          sprites[sprite].frameHold = sprites[sprite].frameHold || this.defaultFrameHold
+          sprites[sprite].offset = sprites[sprite].offset || this.defaultOffset
         }
 
         console.log(this.sprites)
@@ -122,8 +131,15 @@ class Fighter extends Sprite{
       if (this.position.y + this.height+ this.velocity.y >= canvas.height - 96) {
         this.velocity.y = 0
         this.position.y = 330
+        this.jumpCount = 0
       } else this.velocity.y += gravity
       
+  }
+  jump() {
+    if (this.jumpCount < this.maxJumps) {
+      this.velocity.y = -20
+      this.jumpCount++
+    }
   }
   attack () {
     this.switchSprite('attack1')
@@ -164,6 +180,8 @@ class Fighter extends Sprite{
         this.image = this.sprites.idle.image
         this.frameMax = this.sprites.idle.frameMax
         this.frameCurrent = 0
+        this.frameHold = this.sprites.idle.frameHold
+        this.offset = this.sprites.idle.offset
         }
         break
       case 'run':
@@ -171,6 +189,8 @@ class Fighter extends Sprite{
         this.image = this.sprites.run.image
         this.frameMax = this.sprites.run.frameMax
         this.frameCurrent = 0
+        this.frameHold = this.sprites.run.frameHold
+        this.offset = this.sprites.run.offset
         }
         break
       case 'jump':
@@ -178,6 +198,8 @@ class Fighter extends Sprite{
         this.image = this.sprites.jump.image
         this.frameMax = this.sprites.jump.frameMax
         this.frameCurrent = 0
+        this.frameHold = this.sprites.jump.frameHold
+        this.offset = this.sprites.jump.offset
         }
         break
         case 'fall':
@@ -185,6 +207,8 @@ class Fighter extends Sprite{
           this.image = this.sprites.fall.image
           this.frameMax = this.sprites.fall.frameMax
           this.frameCurrent = 0
+          this.frameHold = this.sprites.fall.frameHold
+          this.offset = this.sprites.fall.offset
           }
           break
         case 'attack1':
@@ -192,6 +216,8 @@ class Fighter extends Sprite{
           this.image = this.sprites.attack1.image
           this.frameMax = this.sprites.attack1.frameMax
           this.frameCurrent = 0
+          this.frameHold = this.sprites.attack1.frameHold
+          this.offset = this.sprites.attack1.offset
           }
           break
           case 'takeHit':
@@ -199,6 +225,8 @@ class Fighter extends Sprite{
             this.image = this.sprites.takeHit.image
             this.frameMax = this.sprites.takeHit.frameMax
             this.frameCurrent = 0
+            this.frameHold = this.sprites.takeHit.frameHold
+            this.offset = this.sprites.takeHit.offset
             }
             break
             case 'death':
@@ -206,6 +234,8 @@ class Fighter extends Sprite{
               this.image = this.sprites.death.image
               this.frameMax = this.sprites.death.frameMax
               this.frameCurrent = 0
+              this.frameHold = this.sprites.death.frameHold
+              this.offset = this.sprites.death.offset
               }
               break
     }

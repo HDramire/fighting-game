@@ -9,13 +9,14 @@ function reactangularCollision ({rectangle1, rectangle2}) {
 
 function determineWinner({player, enemy, timerId}){
     clearTimeout(timerId)
-    document.querySelector('#displayText').style.display = 'flex' 
+    document.querySelector('#displayText').style.display = 'flex'
+    const winnerText = document.querySelector('#winnerText')
     if (player.health === enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Tie'
+        winnerText.innerHTML = 'Tie'
     } else if (player.health > enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'PLayer 1 Wins'
+        winnerText.innerHTML = 'Player 1 Wins'
     }  else if (player.health < enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'PLayer 2 Wins'
+        winnerText.innerHTML = 'Player 2 Wins'
     }
 }
 
@@ -33,3 +34,7 @@ function decreaseTimer() {
         determineWinner({player,enemy, timerId})
     }
 }
+
+document.querySelector('#restartButton').addEventListener('click', () => {
+    window.location.reload()
+})

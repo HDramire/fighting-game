@@ -1,0 +1,374 @@
+:root {
+  --bg-deep: #120f1f;
+  --bg-mid: #221733;
+  --panel: rgba(14, 18, 31, 0.82);
+  --panel-border: rgba(255, 255, 255, 0.16);
+  --text-main: #f8f1da;
+  --text-soft: #c9c0db;
+  --accent-warm: #ff9d5c;
+  --accent-cool: #7bc6ff;
+  --danger: #d64545;
+  --health: #7f8cff;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: 'Press Start 2P', cursive;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at top, rgba(255, 157, 92, 0.16), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(123, 198, 255, 0.18), transparent 28%),
+    linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 55%, #0e1323);
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: auto;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+body::before {
+  top: 32px;
+  left: 16px;
+  background: #ff8b4d;
+  animation: floatGlow 9s ease-in-out infinite;
+}
+
+body::after {
+  right: 32px;
+  bottom: 20px;
+  background: #4aa8ff;
+  animation: floatGlow 11s ease-in-out infinite reverse;
+}
+
+.app-shell {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.game-column {
+  display: grid;
+  gap: 18px;
+}
+
+.hero {
+  padding: 18px 22px;
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--accent-warm);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.6rem, 7vw, 4.7rem);
+  line-height: 0.92;
+  letter-spacing: 0.05em;
+}
+
+.hero p {
+  margin: 0;
+  max-width: 760px;
+  color: var(--text-soft);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.game-frame {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  border-radius: 28px;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0.22));
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.game-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 16%, transparent 84%, rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+}
+
+.hud {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.health-bar {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.health-label {
+  margin-bottom: 8px;
+  color: var(--text-soft);
+  font-size: 10px;
+}
+
+.health-track {
+  position: relative;
+  height: 34px;
+  border: 3px solid rgba(255, 255, 255, 0.86);
+  border-radius: 16px;
+  background: rgba(104, 13, 13, 0.92);
+  overflow: hidden;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.32);
+}
+
+.health-bar.player .health-track {
+  border-radius: 16px;
+}
+
+.health-bar.enemy .health-track {
+  border-radius: 16px;
+}
+
+.health-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #95a3ff, #7280f2);
+  border-radius: 12px;
+}
+
+.health-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 46%);
+}
+
+.timer {
+  width: 112px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  color: white;
+  background: linear-gradient(180deg, rgba(11, 12, 18, 0.95), rgba(45, 22, 22, 0.9));
+  box-shadow: 0 0 20px rgba(255, 130, 80, 0.2);
+  font-size: 20px;
+}
+
+#displayText {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: radial-gradient(circle, rgba(16, 17, 28, 0.35), rgba(8, 8, 12, 0.72));
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.end-card {
+  min-width: min(420px, 100%);
+  padding: 28px 24px 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(21, 24, 39, 0.95), rgba(39, 21, 21, 0.92));
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.winner-text {
+  color: white;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 10vw, 6.5rem);
+  letter-spacing: 0.08em;
+  line-height: 0.95;
+}
+
+.restart-button {
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, #ff9d5c, #d96b33);
+  color: #fff8ef;
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(217, 107, 51, 0.3);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.restart-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(217, 107, 51, 0.38);
+  filter: brightness(1.06);
+}
+
+.restart-button:active {
+  transform: translateY(0);
+}
+
+.restart-button:focus-visible {
+  outline: 3px solid rgba(123, 198, 255, 0.9);
+  outline-offset: 4px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.sidebar {
+  display: grid;
+  gap: 16px;
+}
+
+.panel {
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.08em;
+}
+
+.panel p,
+.panel li {
+  color: var(--text-soft);
+  font-size: 10px;
+  line-height: 1.9;
+}
+
+.panel ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.control-chip {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.control-chip strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-main);
+  font-size: 10px;
+}
+
+.panel:last-child {
+  background:
+    linear-gradient(180deg, rgba(255, 157, 92, 0.12), rgba(255, 255, 255, 0.03)),
+    var(--panel);
+}
+
+@keyframes floatGlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(0, -16px, 0) scale(1.06);
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 14px;
+  }
+
+  .hero p,
+  .panel p,
+  .panel li,
+  .control-chip strong,
+  .health-label {
+    font-size: 9px;
+  }
+
+  .game-frame {
+    padding: 12px;
+  }
+
+  .hud {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    gap: 8px;
+  }
+
+  .timer {
+    width: 88px;
+    height: 56px;
+    font-size: 16px;
+  }
+
+  .health-track {
+    height: 28px;
+  }
+}
