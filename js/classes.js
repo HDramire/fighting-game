@@ -105,8 +105,6 @@ class Fighter extends Sprite{
           sprites[sprite].frameHold = sprites[sprite].frameHold || this.defaultFrameHold
           sprites[sprite].offset = sprites[sprite].offset || this.defaultOffset
         }
-
-        console.log(this.sprites)
     }
 
   update () {
