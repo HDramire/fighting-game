@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Henry Ramirez. All rights reserved. Proprietary and confidential.
 class Sprite {
     constructor({
       position, 

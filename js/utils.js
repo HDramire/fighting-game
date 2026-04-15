@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Henry Ramirez. All rights reserved. Proprietary and confidential.
 function reactangularCollision ({rectangle1, rectangle2}) {
     return (
         rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x && 
